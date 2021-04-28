@@ -3,14 +3,14 @@ Using the MPU-9250 IMU sensor, get the angle of a part of the body and visualize
 여러개의 MPU-9250 IMU를 통해서 각 신체부위의 quaternion값을 받아 Unity로 시각화, 여러개의 RX-64를 통해서 팔을 구현.
 
 목차
-[1.Directory](#Directory)
-[2.동기](#동기)
-[3.개요](#개요)
-[4.Block diagram](#Block-diagram)
-[5.Flow chart](#Flow-chart)
-[6.Circuit](#Circuit)
-[7.Result](#Result)
-[8.느낀점](#느낀점)
+1. [Directory](#Directory)
+2. [동기](#동기)
+3. [개요](#개요)
+4. [Block diagram](#Block-diagram)
+5. [Flow chart](#Flow-chart)
+6. [Circuit](#Circuit)
+7. [Result](#Result)
+8. [느낀점](#느낀점)
 
 
 ## Directory
@@ -48,28 +48,39 @@ Using the MPU-9250 IMU sensor, get the angle of a part of the body and visualize
 
 
 ## 동기
-![motivation_img](./img/motivation_img.png)
+    ```
 	COVID-19로 인해 비대면  서비스가  증가하는 반면 COVID-19 검체 현장에서는 대면접촉이  이루어 지고 있어 의료관계자들은 감염 위험에 노출되어 있습니다. 또한, 여름에 레벨D 방호복을 입으면 땀 닦을 수도, 물도 마실 수 없어 피부병도 빈번하게 발생하며, 내부 온도는 38도에 육박했다. 그렇기에 저희는 원격으로 COVID-19의 검체를 진행할 수 있다면 이러한 감염위험이나 의료관계자의 불편함을 줄일 수 있을 것입니다. 또한 검체를 채취하는 과정에서 일회용 보호복을 사용하는 경우가 많은데 원격으로 진행할 수 있다면 그 비용을 절약할 수 있을 것입니다.
+    ```
+    ```
     헬스장의 기존의 대면식 PT를 대체할 비대면식 PT를 제공하며 복잡한 회원 관리가 없어져 일반 헬스장, 아파트 헬스장등 기존 회원 관리의 문제점을 타파할 수 있으며 운동관련 인플루언서들은 자신의 운동을 등록하여 기존의 플랫폼의 단순 동영상 시청의 컨텐츠가 아닌 실제 자신의 운동방식을 알릴 수 있습니다.
+    ```
+
 
 ## 개요
 본 시스템은 크게 4가지 단계로 이루어져 있습니다. (팔 기준)
 1. IMU Slave
 IMU Slave를 손등, 아래팔, 위팔에 달아주며, 플렉스 센서가 붙여진 장갑을 끼면 각 IMU의 quaternion값, 각 손의 플렉스 센서값을 Wi-Fi를 통해서 IMU Master에게 보내줍니다.
-	동작 알고리즘
+    ```
+	동작 알고리즘    
 	1. IMU Master으로부터 보정값 받을 때까지 대기한다.
 	2. 보정값을 받으면 MPU-9250을 통해 보정된 Quaternion값을 받는다.
     3. Flexible sensor값들을 받는다.
 	4. Quaternion값, IMU_2의 이름, Flexible sensor값들을 함께 Wi-Fi를 통해 IMU_MAIN에 전송한다.
+    ```
+
 2. IMU Master
 초기 IMU Slave가 구동할 때 ACC, MAG, GYRO의 보정값을 IMU Slave에게 보내게 되며, IMU Slave에게 받은 값을 Unity에는 quaternion값을 보내게 되며, Atmega에는 변환된 Euler Angle과 플렉스 센서값을 보내게 됩니다.
+    ```
 	동작 알고리즘
 	1. ACC, MAG, GYRO를 각각 두 번 보정하여 평균값을 계산한다.
 	2. Wi-Fi를 통해 5초동안 IMU_1, IMU_2에 보정값 전송한다.
 	3. IMU_1, IMU_2...에서 받는 순서대로 Quaternion값을 UART0에 전송한다.
 	4. IMU_1, IMU_2에서 받는 순서대로 Quaternion값을 Euler Angle로 계산하고, Flexible sensor값과 함께 UART1을 통해 ATmega에 전송한다.
+    ```
+
 3. Atmega-128A(RX-64)
 초기 Euler Angle값을 init하여 이후에 변환하는 Euler Angle을 Denavit–Hartenberg parameters를 통해 RX-64에 모터각 전송합니다.
+    ```
 	동작 알고리즘
 	1. IMU_MAIN으로부터 Euler Angle값, Flexible sensor값 받을 때까지 대기한다.
 	2. Euler Angle값을 출력하며, 지정된 자세일 때 Button을 눌러 init,
@@ -77,14 +88,18 @@ IMU Slave를 손등, 아래팔, 위팔에 달아주며, 플렉스 센서가 붙�
 	4. 상대 Euler Angle값을 Denavit–Hartenberg parameters를 통해 각 motor Angle 계산한다.
 	5. Timer를 통해 50ms를 주기로 RX-64에 데이터 전송한다.
 	6. Flexible sensor값을 0~180도로 나누어 servomotor PWM 제어한다.
+    ```
+
 4. Unity
 받은 quaternion값을 통해서 초기 Quaternion값을 init하여 이후에 변환하는 상대 Quaternion값을 계산하여 Bone을 제어합니다.
+    ```
 	동작 알고리즘
 	1. UART를 사용할 PORT 설정 및 연다.
 	2. IMU_MAIN으로부터 Quaternion값 받을 때까지 대기한다.
 	3. Quaternion값을 출력하며, 지정된 자세일 때 spacebar를 눌러 init.
 	4. init한 Quaternion값과의 상대 Quaternion값을 계산한다.
 	5. Bone제어한다.
+    ```
 
 
 ## Block diagram
