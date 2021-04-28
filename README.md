@@ -111,39 +111,33 @@ IMU Slave를 손등, 아래팔, 위팔에 달아주며, 플렉스 센서가 붙�
 
 
 ## Flow chart
-**1. IMU Master flow chart**
-
+**1. IMU Master flow chart**  
 ![flow_chart_IMU_Master](./img/flow_chart_IMU_Master.png)  
 
-**2. IMU Slave flow chart**
-
+**2. IMU Slave flow chart**  
 ![flow_chart_IMU_Slave](./img/flow_chart_IMU_Slave.png)
 
-**3. Atmega flow chart**
-
+**3. Atmega flow chart**  
 ![flow_chart_Atmega](./img/flow_chart_Atmega.png)
 
 
 ## Circuit
-**1. IMU Master Circuit**
-
+**1. IMU Master Circuit**  
 ![Circuit_IMU_Master](./img/Circuit_IMU_Master.png)  
 
-**2. IMU Slave Circuit**
-
+**2. IMU Slave Circuit**  
 ![Circuit_IMU_Slave](./img/Circuit_IMU_Slave.png)
 
-**3. Atmega Circuit**
-
+**3. Atmega Circuit**  
 <img src = "./img/Circuit_atmega1.png" width = "40%"> <img src = "./img/Circuit_atmega2.png" width = "40%">
 
 
 
 ## Result
-![result1](./img/result1.gif)
+![result1](./img/result1.gif)  
 실제 프로토타입으로 개발하였던 센서를 기반으로 atmega와 연동하여 RX-64를 구동하는 것을 보여줍니다.
 
-![result2](./img/result2.gif)
+![result2](./img/result2.gif)  
 실제 프로토타입으로 개발하였던 센서를 기반으로 Unity와 연동하여 스마트미러를 통해 데이터를 받아오는 것을 보여줍니다.
 
 
