@@ -112,23 +112,29 @@ IMU Slave를 손등, 아래팔, 위팔에 달아주며, 플렉스 센서가 붙�
 
 ## Flow chart
 **1. IMU Master flow chart**
+
 ![flow_chart_IMU_Master](./img/flow_chart_IMU_Master.png)  
 
 **2. IMU Slave flow chart**
+
 ![flow_chart_IMU_Slave](./img/flow_chart_IMU_Slave.png)
 
 **3. Atmega flow chart**
+
 ![flow_chart_Atmega](./img/flow_chart_Atmega.png)
 
 
 ## Circuit
 **1. IMU Master Circuit**
+
 ![Circuit_IMU_Master](./img/Circuit_IMU_Master.png)  
 
 **2. IMU Slave Circuit**
+
 ![Circuit_IMU_Slave](./img/Circuit_IMU_Slave.png)
 
 **3. Atmega Circuit**
+
 <img src = "./img/Circuit_atmega1.png" width = "40%"> <img src = "./img/Circuit_atmega2.png" width = "40%">
 
 
